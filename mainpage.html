@@ -120,7 +120,7 @@ aria-hidden="true">
 </div>
 
     <script>
-
+      var titleCrash = "Kaza Bilgisi<br/>";
       var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       var labelIndex = 0;
       function initAutocomplete() {
@@ -202,17 +202,29 @@ aria-hidden="true">
       function bildirClick()
       {
 
+        var textAreaVal = titleCrash + $("#form8").val();
+
         $('#modalBildirForm').modal('hide');
+
+        var currLabel = labels[labelIndex++ % labels.length];
         var marker = new google.maps.Marker({
             position: this.currLocation,
-            label: labels[labelIndex++ % labels.length],
+            label: currLabel,
             map: this.currMap
+          });
+
+
+      var infowindow = new google.maps.InfoWindow({
+        content: textAreaVal
+      });
+          marker.addListener('click',function(){
+            infowindow.open(map,marker);
           });
 
       }
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete"
          async defer></script>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
