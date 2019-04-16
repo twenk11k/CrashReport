@@ -194,6 +194,16 @@
     #location {
 
       margin-bottom: 10px;
+      display: flex;
+
+    }
+    #display_locations {
+      font-family: Roboto;
+      font-size: 17px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    #location_img {
       margin-left: 5px;
     }
   </style>
@@ -204,10 +214,11 @@
   <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
   <div id="bottom_left">
     <div id="location" onclick='locationClick();'>
+      <p id="display_locations">Konumları Göster</p>
       <img src="img/location_24.png" id="location_img" />
     </div>
     <div id="onoffswitch2">
-      <p id="night_mode"> Gece Modu</p>
+      <p id="night_mode">Gece Modu</p>
       <div class="onoffswitch">
         <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="myonoffswitch">
         <label class="onoffswitch-label" for="myonoffswitch">
@@ -381,8 +392,6 @@
 
     function initAutocomplete() {
 
-
-
       map = new google.maps.Map(document.getElementById('map'), {
         center: {
           lat: 41.0766019,
@@ -465,19 +474,25 @@
 
 
     function handleChange(checkbox) {
-      var text = document.getElementById("night_mode");
+      var textNight = document.getElementById("night_mode");
+      var textLocation = document.getElementById("display_locations");
+
       var locationImg = document.getElementById("location_img");
       if (checkbox.checked == true) {
         -map.setOptions({
           styles: styles['night']
         });
-        text.style.color = '#e5e5e5';
+        textNight.style.color = '#e5e5e5';
+        textLocation.style.color = '#e5e5e5';
+
         locationImg.src = "img/location_white_36.png";
       } else {
         -map.setOptions({
           styles: styles['default']
         });
-        text.style.color = 'black';
+        textNight.style.color = 'black';
+        textLocation.style.color = 'black';
+
         locationImg.src = "img/location_black_36.png";
 
       }
@@ -557,6 +572,9 @@
           }
         });
         isAlreadyDone = true;
+      } else {
+        BootstrapDialog.alert('I want banana!');
+
       }
 
 
