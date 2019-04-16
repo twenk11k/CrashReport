@@ -61,7 +61,7 @@
         font-weight: 300;
       }
 
-      #pac-input {
+      #pac_input {
         background-color: #fff;
         font-family: Roboto;
         font-size: 15px;
@@ -73,11 +73,11 @@
         width: 400px;
       }
 
-      #pac-input:focus {
+      #pac_input:focus {
         border-color: #4d90fe;
       }
 
-      #title {
+     #title {
         color: #fff;
         background-color: #4d90fe;
         font-size: 25px;
@@ -87,10 +87,80 @@
       #target {
         width: 345px;
       }
+      .onoffswitch {
+      position: relative; width: 99px;
+      -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+  }
+  .onoffswitch {
+      position: relative; width: 75px;
+      margin-left: 10px;
+  }
+  .onoffswitch-checkbox {
+      display: none;
+  }
+  .onoffswitch-label {
+      display: block; overflow: hidden; cursor: pointer;
+      border: 2px solid #999999; border-radius: 12px;
+  }
+  .onoffswitch-inner {
+      display: block; width: 200%; margin-left: -100%;
+      transition: margin 0.3s ease-in 0s;
+  }
+  .onoffswitch-inner:before, .onoffswitch-inner:after {
+      display: block; float: left; width: 50%; height: 27px; padding: 0; line-height: 27px;
+      font-size: 9px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+      box-sizing: border-box;
+  }
+  .onoffswitch-inner:before {
+      content: "AKTIF";
+      padding-left: 8px;
+      background-color: #30C74E; color: #FFFFFF;
+  }
+  .onoffswitch-inner:after {
+      content: "KAPALI";
+      padding-right: 8px;
+      background-color: #EEEEEE; color: #999999;
+      text-align: right;
+  }
+  .onoffswitch-switch {
+      display: block; width: 19px; margin: 4px; margin-bottom: 14px;
+      background: #FFFFFF;
+      position: absolute; top: 0; bottom: 0;
+      right: 44px;
+      border: 2px solid #999999; border-radius: 12px;
+      transition: all 0.3s ease-in 0s;
+  }
+  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+      margin-left: 0;
+  }
+  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+      right: 0px;
+  }
+  #night_mode{
+    font-family: Roboto;
+    font-size: 17px;
+    margin-top: 5px;
+    }
+    #onoffswitch2{
+      display: flex;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
     </style>
   </head>
   <body>
-    <input id="pac-input" class="searchaddress" type="text" placeholder="Adres Ara">
+
+    <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
+    <div id="onoffswitch2" >
+        <p id="night_mode"> Gece Modu</p>
+      <div class="onoffswitch">
+        <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="myonoffswitch">
+        <label class="onoffswitch-label" for="myonoffswitch">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+        </label>
+    </div>
+  </div>
     <div id="map"></div>
 
     <div class="modal fade" id="modalBildirForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -120,22 +190,114 @@ aria-hidden="true">
 </div>
 
     <script>
-      var titleCrash = "Kaza Bilgisi<br/>";
-      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      var labelIndex = 0;
+
+    var titleCrash = "Kaza Bilgisi<br/>";
+    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var labelIndex = 0;
+    var map;
+
+      var styles = {
+        default: null,
+        night: [
+                  {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+                  {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+                  {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+                  {
+                    featureType: 'administrative.locality',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                  },
+                  {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                  },
+                  {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [{color: '#263c3f'}]
+                  },
+                  {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#6b9a76'}]
+                  },
+                  {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{color: '#38414e'}]
+                  },
+                  {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#212a37'}]
+                  },
+                  {
+                    featureType: 'road',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#9ca5b3'}]
+                  },
+                  {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{color: '#746855'}]
+                  },
+                  {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#1f2835'}]
+                  },
+                  {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#f3d19c'}]
+                  },
+                  {
+                    featureType: 'transit',
+                    elementType: 'geometry',
+                    stylers: [{color: '#2f3948'}]
+                  },
+                  {
+                    featureType: 'transit.station',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                  },
+                  {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [{color: '#17263c'}]
+                  },
+                  {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#515c6d'}]
+                  },
+                  {
+                    featureType: 'water',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{color: '#17263c'}]
+                  }
+                ]
+              };
+
       function initAutocomplete() {
 
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:41.015137, lng: 28.979530},
-          zoom: 11,
-          mapTypeId: 'roadmap'
+
+
+       map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:41.0766019, lng: 29.052495},
+          zoom: 9.7,
+          mapTypeId: 'roadmap',
         });
 
-        var input = document.getElementById('pac-input');
+        var input = document.getElementById('pac_input');
         var searchBox = new google.maps.places.SearchBox(input);
         var trafficLayer = new google.maps.TrafficLayer();
 
+        var homeControlDiv = document.getElementById('onoffswitch2');
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
+        map.setOptions({styles: styles['default']});
 
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
@@ -193,6 +355,19 @@ aria-hidden="true">
         });
 
       }
+      function handleChange(checkbox) {
+        var text = document.getElementById("night_mode");
+          if(checkbox.checked == true){
+-              map.setOptions({styles: styles['night']});
+              text.style.color = 'gray';
+          }else{
+-            map.setOptions({styles: styles['default']});
+            text.style.color = 'black';
+
+         }
+      }
+
+
       var currLocation,currMap;
       function addMarker(location, map) {
             this.currLocation = location;
@@ -226,9 +401,9 @@ aria-hidden="true">
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete"
          async defer></script>
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="jquery/jquery-3.4.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script type="text/javascript" src="js/mainpage.js"></script>
   </body>
 </html>
