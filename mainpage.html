@@ -146,11 +146,19 @@
       font-weight: bold;
       margin-bottom: 20px;
     }
+    #location{
+
+      margin-bottom: 10px;
+      margin-left: 5px;    }
     </style>
   </head>
   <body>
 
     <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
+    <div id="bottom_left">
+      <div id="location" onclick='locationClick();' >
+          <img src="img/location_24.png" id="location_img"/>
+      </div>
     <div id="onoffswitch2" >
         <p id="night_mode"> Gece Modu</p>
       <div class="onoffswitch">
@@ -160,7 +168,9 @@
             <span class="onoffswitch-switch"></span>
         </label>
     </div>
+
   </div>
+</div>
     <div id="map"></div>
 
     <div class="modal fade" id="modalBildirForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -294,9 +304,10 @@ aria-hidden="true">
         var searchBox = new google.maps.places.SearchBox(input);
         var trafficLayer = new google.maps.TrafficLayer();
 
-        var homeControlDiv = document.getElementById('onoffswitch2');
+        var homeControlDiv = document.getElementById('bottom_left');
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
         map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
+
         map.setOptions({styles: styles['default']});
 
         map.addListener('bounds_changed', function() {
@@ -355,18 +366,32 @@ aria-hidden="true">
         });
 
       }
+
+
       function handleChange(checkbox) {
         var text = document.getElementById("night_mode");
+        var locationImg = document.getElementById("location_img");
           if(checkbox.checked == true){
 -              map.setOptions({styles: styles['night']});
-              text.style.color = 'gray';
+              text.style.color = '#e5e5e5';
+              locationImg.src = "img/location_white_36.png";
           }else{
 -            map.setOptions({styles: styles['default']});
             text.style.color = 'black';
+            locationImg.src = "img/location_black_36.png";
 
          }
       }
 
+      function locationClick(){
+
+
+
+                        $.getJSON('https://my-json-server.typicode.com/dijwarbozyel/locationdata/locations', function(data) {
+    console.log(data);
+});
+
+      }
 
       var currLocation,currMap;
       function addMarker(location, map) {
