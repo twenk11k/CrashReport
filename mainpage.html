@@ -1,434 +1,604 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-    <title>Crash Report</title>
-    <style>
-      #map {
-        height: 100%;
-      }
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #description {
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-      }
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-      #infowindow-content .title {
-        font-weight: bold;
-      }
+  <title>Crash Report</title>
+  <style>
+    #map {
+      height: 100%;
+    }
 
-      #infowindow-content {
-        display: none;
-      }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-      #map #infowindow-content {
-        display: inline;
-      }
+    #description {
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+    }
 
-      .pac-card {
-        margin: 10px 10px 0 0;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        background-color: #fff;
-        font-family: Roboto;
-      }
+    #infowindow-content .title {
+      font-weight: bold;
+    }
 
-      #pac-container {
-        padding-bottom: 12px;
-        margin-right: 12px;
-      }
-
-      .pac-controls {
-        display: inline-block;
-        padding: 5px 11px;
-      }
-
-      .pac-controls label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }
-
-      #pac_input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 220px;
-        margin-top: 15px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-
-      #pac_input:focus {
-        border-color: #4d90fe;
-      }
-
-     #title {
-        color: #fff;
-        background-color: #4d90fe;
-        font-size: 25px;
-        font-weight: 500;
-        padding: 6px 12px;
-      }
-      #target {
-        width: 345px;
-      }
-      .onoffswitch {
-      position: relative; width: 99px;
-      -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-  }
-  .onoffswitch {
-      position: relative; width: 75px;
-      margin-left: 10px;
-  }
-  .onoffswitch-checkbox {
+    #infowindow-content {
       display: none;
-  }
-  .onoffswitch-label {
-      display: block; overflow: hidden; cursor: pointer;
-      border: 2px solid #999999; border-radius: 12px;
-  }
-  .onoffswitch-inner {
-      display: block; width: 200%; margin-left: -100%;
-      transition: margin 0.3s ease-in 0s;
-  }
-  .onoffswitch-inner:before, .onoffswitch-inner:after {
-      display: block; float: left; width: 50%; height: 27px; padding: 0; line-height: 27px;
-      font-size: 9px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    }
+
+    #map #infowindow-content {
+      display: inline;
+    }
+
+    .pac-card {
+      margin: 10px 10px 0 0;
+      border-radius: 2px 0 0 2px;
       box-sizing: border-box;
-  }
-  .onoffswitch-inner:before {
+      -moz-box-sizing: border-box;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      background-color: #fff;
+      font-family: Roboto;
+    }
+
+    #pac-container {
+      padding-bottom: 12px;
+      margin-right: 12px;
+    }
+
+    .pac-controls {
+      display: inline-block;
+      padding: 5px 11px;
+    }
+
+    .pac-controls label {
+      font-family: Roboto;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    #pac_input {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 220px;
+      margin-top: 15px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 400px;
+    }
+
+    #pac_input:focus {
+      border-color: #4d90fe;
+    }
+
+    #title {
+      color: #fff;
+      background-color: #4d90fe;
+      font-size: 25px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    #target {
+      width: 345px;
+    }
+
+    .onoffswitch {
+      position: relative;
+      width: 99px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .onoffswitch {
+      position: relative;
+      width: 75px;
+      margin-left: 10px;
+    }
+
+    .onoffswitch-checkbox {
+      display: none;
+    }
+
+    .onoffswitch-label {
+      display: block;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid #999999;
+      border-radius: 12px;
+    }
+
+    .onoffswitch-inner {
+      display: block;
+      width: 200%;
+      margin-left: -100%;
+      transition: margin 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-inner:before,
+    .onoffswitch-inner:after {
+      display: block;
+      float: left;
+      width: 50%;
+      height: 27px;
+      padding: 0;
+      line-height: 27px;
+      font-size: 9px;
+      color: white;
+      font-family: Trebuchet, Arial, sans-serif;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    .onoffswitch-inner:before {
       content: "AKTIF";
       padding-left: 8px;
-      background-color: #30C74E; color: #FFFFFF;
-  }
-  .onoffswitch-inner:after {
+      background-color: #30C74E;
+      color: #FFFFFF;
+    }
+
+    .onoffswitch-inner:after {
       content: "KAPALI";
       padding-right: 8px;
-      background-color: #EEEEEE; color: #999999;
+      background-color: #EEEEEE;
+      color: #999999;
       text-align: right;
-  }
-  .onoffswitch-switch {
-      display: block; width: 19px; margin: 4px; margin-bottom: 14px;
-      background: #FFFFFF;
-      position: absolute; top: 0; bottom: 0;
-      right: 44px;
-      border: 2px solid #999999; border-radius: 12px;
-      transition: all 0.3s ease-in 0s;
-  }
-  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-      margin-left: 0;
-  }
-  .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-      right: 0px;
-  }
-  #night_mode{
-    font-family: Roboto;
-    font-size: 17px;
-    margin-top: 5px;
     }
-    #onoffswitch2{
+
+    .onoffswitch-switch {
+      display: block;
+      width: 19px;
+      margin: 4px;
+      margin-bottom: 14px;
+      background: #FFFFFF;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 44px;
+      border: 2px solid #999999;
+      border-radius: 12px;
+      transition: all 0.3s ease-in 0s;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+      margin-left: 0;
+    }
+
+    .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+      right: 0px;
+    }
+
+    #night_mode {
+      font-family: Roboto;
+      font-size: 17px;
+      margin-top: 5px;
+    }
+
+    #onoffswitch2 {
       display: flex;
       font-weight: bold;
       margin-bottom: 20px;
     }
-    #location{
+
+    #location {
 
       margin-bottom: 10px;
-      margin-left: 5px;    }
-    </style>
-  </head>
-  <body>
+      margin-left: 5px;
+    }
+  </style>
+</head>
 
-    <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
-    <div id="bottom_left">
-      <div id="location" onclick='locationClick();' >
-          <img src="img/location_24.png" id="location_img"/>
-      </div>
-    <div id="onoffswitch2" >
-        <p id="night_mode"> Gece Modu</p>
+<body>
+
+  <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
+  <div id="bottom_left">
+    <div id="location" onclick='locationClick();'>
+      <img src="img/location_24.png" id="location_img" />
+    </div>
+    <div id="onoffswitch2">
+      <p id="night_mode"> Gece Modu</p>
       <div class="onoffswitch">
         <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="myonoffswitch">
         <label class="onoffswitch-label" for="myonoffswitch">
-            <span class="onoffswitch-inner"></span>
-            <span class="onoffswitch-switch"></span>
+          <span class="onoffswitch-inner"></span>
+          <span class="onoffswitch-switch"></span>
         </label>
-    </div>
-
-  </div>
-</div>
-    <div id="map"></div>
-
-    <div class="modal fade" id="modalBildirForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold">Kaza Bildir</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body mx-3">
-
-      <div class="md-form">
-        <i class="fas fa-pencil prefix grey-text"></i>
-        <textarea type="text" id="form8" class="md-textarea form-control" rows="4"></textarea>
-        <label data-error="wrong" data-success="right" for="form8">Açıklama</label>
       </div>
 
     </div>
-    <div class="modal-footer d-flex justify-content-center">
-      <button class="btn btn-unique" id="bildir" onClick="bildirClick()">Bildir <i class="fas fa-paper-plane-o ml-1"></i></button>
+  </div>
+  <div id="map"></div>
+
+  <div class="modal fade" id="modalBildirForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">Kaza Bildir</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-3">
+
+          <div class="md-form">
+            <i class="fas fa-pencil prefix grey-text"></i>
+            <textarea type="text" id="form8" class="md-textarea form-control" rows="4"></textarea>
+            <label data-error="wrong" data-success="right" for="form8">Açıklama</label>
+          </div>
+
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button class="btn btn-unique" id="bildir" onClick="bildirClick()">Bildir <i class="fas fa-paper-plane-o ml-1"></i></button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-</div>
 
-    <script>
-
+  <script>
     var titleCrash = "Kaza Bilgisi<br/>";
     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var labelIndex = 0;
     var map;
 
-      var styles = {
-        default: null,
-        night: [
-                  {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-                  {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-                  {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-                  {
-                    featureType: 'administrative.locality',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#d59563'}]
-                  },
-                  {
-                    featureType: 'poi',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#d59563'}]
-                  },
-                  {
-                    featureType: 'poi.park',
-                    elementType: 'geometry',
-                    stylers: [{color: '#263c3f'}]
-                  },
-                  {
-                    featureType: 'poi.park',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#6b9a76'}]
-                  },
-                  {
-                    featureType: 'road',
-                    elementType: 'geometry',
-                    stylers: [{color: '#38414e'}]
-                  },
-                  {
-                    featureType: 'road',
-                    elementType: 'geometry.stroke',
-                    stylers: [{color: '#212a37'}]
-                  },
-                  {
-                    featureType: 'road',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#9ca5b3'}]
-                  },
-                  {
-                    featureType: 'road.highway',
-                    elementType: 'geometry',
-                    stylers: [{color: '#746855'}]
-                  },
-                  {
-                    featureType: 'road.highway',
-                    elementType: 'geometry.stroke',
-                    stylers: [{color: '#1f2835'}]
-                  },
-                  {
-                    featureType: 'road.highway',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#f3d19c'}]
-                  },
-                  {
-                    featureType: 'transit',
-                    elementType: 'geometry',
-                    stylers: [{color: '#2f3948'}]
-                  },
-                  {
-                    featureType: 'transit.station',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#d59563'}]
-                  },
-                  {
-                    featureType: 'water',
-                    elementType: 'geometry',
-                    stylers: [{color: '#17263c'}]
-                  },
-                  {
-                    featureType: 'water',
-                    elementType: 'labels.text.fill',
-                    stylers: [{color: '#515c6d'}]
-                  },
-                  {
-                    featureType: 'water',
-                    elementType: 'labels.text.stroke',
-                    stylers: [{color: '#17263c'}]
-                  }
-                ]
-              };
+    var styles = {
+      default: null,
+      night: [{
+          elementType: 'geometry',
+          stylers: [{
+            color: '#242f3e'
+          }]
+        },
+        {
+          elementType: 'labels.text.stroke',
+          stylers: [{
+            color: '#242f3e'
+          }]
+        },
+        {
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#746855'
+          }]
+        },
+        {
+          featureType: 'administrative.locality',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#d59563'
+          }]
+        },
+        {
+          featureType: 'poi',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#d59563'
+          }]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'geometry',
+          stylers: [{
+            color: '#263c3f'
+          }]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#6b9a76'
+          }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry',
+          stylers: [{
+            color: '#38414e'
+          }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry.stroke',
+          stylers: [{
+            color: '#212a37'
+          }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#9ca5b3'
+          }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry',
+          stylers: [{
+            color: '#746855'
+          }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry.stroke',
+          stylers: [{
+            color: '#1f2835'
+          }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#f3d19c'
+          }]
+        },
+        {
+          featureType: 'transit',
+          elementType: 'geometry',
+          stylers: [{
+            color: '#2f3948'
+          }]
+        },
+        {
+          featureType: 'transit.station',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#d59563'
+          }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'geometry',
+          stylers: [{
+            color: '#17263c'
+          }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.fill',
+          stylers: [{
+            color: '#515c6d'
+          }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.stroke',
+          stylers: [{
+            color: '#17263c'
+          }]
+        }
+      ]
+    };
 
-      function initAutocomplete() {
+    function initAutocomplete() {
 
 
 
-       map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:41.0766019, lng: 29.052495},
-          zoom: 9.7,
-          mapTypeId: 'roadmap',
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+          lat: 41.0766019,
+          lng: 29.052495
+        },
+        zoom: 9.7,
+        mapTypeId: 'roadmap',
+      });
+
+      var input = document.getElementById('pac_input');
+      var searchBox = new google.maps.places.SearchBox(input);
+      var trafficLayer = new google.maps.TrafficLayer();
+
+      var homeControlDiv = document.getElementById('bottom_left');
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+      map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
+
+      map.setOptions({
+        styles: styles['default']
+      });
+
+      map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+      });
+      map.addListener('click', function(event) {
+        addMarker(event.latLng, map);
+      });
+
+
+
+      var markers = [];
+
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        markers.forEach(function(marker) {
+          marker.setMap(null);
         });
+        markers = [];
 
-        var input = document.getElementById('pac_input');
-        var searchBox = new google.maps.places.SearchBox(input);
-        var trafficLayer = new google.maps.TrafficLayer();
+        var bounds = new google.maps.LatLngBounds();
 
-        var homeControlDiv = document.getElementById('bottom_left');
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-        map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(homeControlDiv);
-
-        map.setOptions({styles: styles['default']});
-
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
-        map.addListener('click', function(event) {
-            addMarker(event.latLng, map);
-        });
-
-        var markers = [];
-
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
-
-          if (places.length == 0) {
+        places.forEach(function(place) {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
             return;
           }
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
 
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-          markers = [];
+          markers.push(new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          }));
 
-          var bounds = new google.maps.LatLngBounds();
-
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
-
-            markers.push(new google.maps.Marker({
-              map: map,
-              icon: icon,
-              title: place.name,
-              position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
-          trafficLayer.setMap(map);
-          trafficLayer.fitBounds(bounds);
-
+          if (place.geometry.viewport) {
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
         });
+        map.fitBounds(bounds);
+        trafficLayer.setMap(map);
+        trafficLayer.fitBounds(bounds);
+
+      });
+
+    }
+
+
+    function handleChange(checkbox) {
+      var text = document.getElementById("night_mode");
+      var locationImg = document.getElementById("location_img");
+      if (checkbox.checked == true) {
+        -map.setOptions({
+          styles: styles['night']
+        });
+        text.style.color = '#e5e5e5';
+        locationImg.src = "img/location_white_36.png";
+      } else {
+        -map.setOptions({
+          styles: styles['default']
+        });
+        text.style.color = 'black';
+        locationImg.src = "img/location_black_36.png";
 
       }
+    }
+
+    function locationClick() {
 
 
-      function handleChange(checkbox) {
-        var text = document.getElementById("night_mode");
-        var locationImg = document.getElementById("location_img");
-          if(checkbox.checked == true){
--              map.setOptions({styles: styles['night']});
-              text.style.color = '#e5e5e5';
-              locationImg.src = "img/location_white_36.png";
-          }else{
--            map.setOptions({styles: styles['default']});
-            text.style.color = 'black';
-            locationImg.src = "img/location_black_36.png";
+      $.getJSON('https://my-json-server.typicode.com/dijwarbozyel/locationdata/locations', function(data) {
 
-         }
-      }
+        console.log(data);
+        var labelVal = "ABCD";
+        var labelValIndex = 0;
 
-      function locationClick(){
+        for(var i=0; i<data.length; i++){
+          var latVal = data[i].location[0];
+          var lngVal = data[i].location[1];
+          var positionLocation = {lat: latVal,lng: lngVal};
+          var currLabel = labelVal[labelValIndex++ % labelVal.length];
+
+          switch (i) {
+            case 0:
+            var marker0 = new google.maps.Marker({
+              position: positionLocation,
+              label: currLabel,
+              map: map
+            });
+            var infowindow0 = new google.maps.InfoWindow({
+              content: data[i].name
+            });
+            marker0.addListener('click', function() {
+              infowindow0.open(map, marker0);
+            });
+              break;
+            case 1:
+            var marker1 = new google.maps.Marker({
+              position: positionLocation,
+              label: currLabel,
+              map: map
+            });
+            var infowindow1 = new google.maps.InfoWindow({
+              content: data[i].name
+            });
+            marker1.addListener('click', function() {
+              infowindow1.open(map, marker1);
+            });
+            break;
+            case 2:
+            var marker2 = new google.maps.Marker({
+              position: positionLocation,
+              label: currLabel,
+              map: map
+            });
+            var infowindow2 = new google.maps.InfoWindow({
+              content: data[i].name
+            });
+            marker2.addListener('click', function() {
+              infowindow2.open(map, marker2);
+            });
+            break;
+            case 3:
+            var marker3 = new google.maps.Marker({
+              position: positionLocation,
+              label: currLabel,
+              map: map
+            });
+            var infowindow3 = new google.maps.InfoWindow({
+              content: data[i].name
+            });
+            marker3.addListener('click', function() {
+              infowindow3.open(map, marker3);
+            });
+            break;
+            default:
+
+          }
+        }
+      });
 
 
 
-                        $.getJSON('https://my-json-server.typicode.com/dijwarbozyel/locationdata/locations', function(data) {
-    console.log(data);
-});
 
-      }
+    }
 
-      var currLocation,currMap;
-      function addMarker(location, map) {
-            this.currLocation = location;
-            this.currMap = map;
-            $('#modalBildirForm').modal('show');
-      }
-      function bildirClick()
-      {
+    var currLocation, currMap;
 
-        var textAreaVal = titleCrash + $("#form8").val();
+    function addMarker(location, map) {
+      this.currLocation = location;
+      this.currMap = map;
+      $('#modalBildirForm').modal('show');
+    }
 
-        $('#modalBildirForm').modal('hide');
+    function bildirClick() {
 
-        var currLabel = labels[labelIndex++ % labels.length];
-        var marker = new google.maps.Marker({
-            position: this.currLocation,
-            label: currLabel,
-            map: this.currMap
-          });
+      var textAreaVal = titleCrash + $("#form8").val();
+
+      $('#modalBildirForm').modal('hide');
+
+      var currLabel = labels[labelIndex++ % labels.length];
+      var marker = new google.maps.Marker({
+        position: this.currLocation,
+        label: currLabel,
+        map: this.currMap
+      });
 
 
       var infowindow = new google.maps.InfoWindow({
         content: textAreaVal
       });
-          marker.addListener('click',function(){
-            infowindow.open(map,marker);
-          });
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
 
-      }
-    </script>
+    }
+  </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete"
-         async defer></script>
-    <script src="jquery/jquery-3.4.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/mainpage.js"></script>
-  </body>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete" async defer></script>
+  <script src="jquery/jquery-3.4.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="js/mainpage.js"></script>
+</body>
+
 </html>
