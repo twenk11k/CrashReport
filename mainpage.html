@@ -193,18 +193,20 @@
 
     #location {
 
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       display: flex;
 
     }
+
     #display_locations {
       font-family: Roboto;
       font-size: 17px;
-      margin-top: 5px;
+      margin-top: 10px;
       font-weight: bold;
     }
+
     #location_img {
-      margin-left: 5px;
+      margin-left: 5px
     }
   </style>
 </head>
@@ -498,74 +500,78 @@
       }
     }
     var isAlreadyDone = false;
+
     function locationClick() {
 
-      if(!isAlreadyDone){
+      if (!isAlreadyDone) {
         $.getJSON('https://my-json-server.typicode.com/dijwarbozyel/locationdata/locations', function(data) {
 
           console.log(data);
           var labelVal = "ABCD";
           var labelValIndex = 0;
 
-          for(var i=0; i<data.length; i++){
+          for (var i = 0; i < data.length; i++) {
             var latVal = data[i].location[0];
             var lngVal = data[i].location[1];
-            var positionLocation = {lat: latVal,lng: lngVal};
+            var positionLocation = {
+              lat: latVal,
+              lng: lngVal
+            };
             var currLabel = labelVal[labelValIndex++ % labelVal.length];
 
             switch (i) {
               case 0:
-              var marker0 = new google.maps.Marker({
-                position: positionLocation,
-                label: currLabel,
-                map: map
-              });
-              var infowindow0 = new google.maps.InfoWindow({
-                content: data[i].name
-              });
-              marker0.addListener('click', function() {
-                infowindow0.open(map, marker0);
-              });
+                var marker0 = new google.maps.Marker({
+                  position: positionLocation,
+                  label: currLabel,
+                  map: map
+                });
+                var infowindow0 = new google.maps.InfoWindow({
+                  content: data[i].name
+                });
+                marker0.addListener('click', function() {
+                  infowindow0.open(map, marker0);
+                });
                 break;
               case 1:
-              var marker1 = new google.maps.Marker({
-                position: positionLocation,
-                label: currLabel,
-                map: map
-              });
-              var infowindow1 = new google.maps.InfoWindow({
-                content: data[i].name
-              });
-              marker1.addListener('click', function() {
-                infowindow1.open(map, marker1);
-              });
-              break;
+                var marker1 = new google.maps.Marker({
+                  position: positionLocation,
+                  label: currLabel,
+                  map: map
+                });
+                var infowindow1 = new google.maps.InfoWindow({
+                  content: data[i].name
+                });
+                marker1.addListener('click', function() {
+                  infowindow1.open(map, marker1);
+                });
+                break;
               case 2:
-              var marker2 = new google.maps.Marker({
-                position: positionLocation,
-                label: currLabel,
-                map: map
-              });
-              var infowindow2 = new google.maps.InfoWindow({
-                content: data[i].name
-              });
-              marker2.addListener('click', function() {
-                infowindow2.open(map, marker2);
-              });
-              break;
+                var marker2 = new google.maps.Marker({
+                  position: positionLocation,
+                  label: currLabel,
+                  map: map
+                });
+                var infowindow2 = new google.maps.InfoWindow({
+                  content: data[i].name
+                });
+                marker2.addListener('click', function() {
+                  infowindow2.open(map, marker2);
+                });
+                break;
               case 3:
-              var marker3 = new google.maps.Marker({
-                position: positionLocation,
-                label: currLabel,
-                map: map
-              });
-              var infowindow3 = new google.maps.InfoWindow({
-                content: data[i].name
-              });
-              marker3.addListener('click', function() {
-                infowindow3.open(map, marker3);
-              });
-              break;
+                var marker3 = new google.maps.Marker({
+                  position: positionLocation,
+                  label: currLabel,
+                  map: map
+                });
+                var infowindow3 = new google.maps.InfoWindow({
+                  content: data[i].name
+                });
+                marker3.addListener('click', function() {
+                  infowindow3.open(map, marker3);
+                });
+                break;
               default:
 
             }
@@ -573,8 +579,7 @@
         });
         isAlreadyDone = true;
       } else {
-        BootstrapDialog.alert('I want banana!');
-
+        alert("Konumlar zaten haritada gösteriliyor..");
       }
 
 
@@ -592,7 +597,6 @@
     function bildirClick() {
 
       var textAreaVal = titleCrash + $("#form8").val();
-
       $('#modalBildirForm').modal('hide');
 
       var currLabel = labels[labelIndex++ % labels.length];
