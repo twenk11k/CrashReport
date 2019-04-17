@@ -276,7 +276,7 @@
 
   <script>
 
-    var titleCrash = "Kaza Bilgisi<br/>";
+    var titleCrash = "<b>Kaza Bilgisi</b><br/>";
     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var labelIndex = 0;
     var map;
@@ -614,9 +614,9 @@
       var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
       var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
-      var textAreaVal = "<b>Açıklama</b></br>"+ titleCrash + $("#form8").val() +"</br>";
+      var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
 
-      var total = textCrashDate+textExpectedTime+textAreaVal;
+      var total = titleCrash+ "</br>"+textCrashDate+textExpectedTime+textAreaVal;
       $('#modalBildirForm').modal('hide');
 
       var currLabel = labels[labelIndex++ % labels.length];
