@@ -6,6 +6,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <script src="jquery/jquery-3.4.0.min.js"></script>
+
 
   <title>Crash Report</title>
   <style>
@@ -217,7 +219,7 @@
   <div id="bottom_left">
     <div id="location" onclick='locationClick();'>
       <p id="display_locations">Konumları Göster</p>
-      <img src="img/location_24.png" id="location_img" />
+      <img src="img/location_black_36.png" id="location_img" />
     </div>
     <div id="onoffswitch2">
       <p id="night_mode">Gece Modu</p>
@@ -228,7 +230,6 @@
           <span class="onoffswitch-switch"></span>
         </label>
       </div>
-
     </div>
   </div>
   <div id="map"></div>
@@ -244,13 +245,28 @@
         </div>
         <div class="modal-body mx-3">
 
-          <div class="md-form">
-            <i class="fas fa-pencil prefix grey-text"></i>
-            <textarea type="text" id="form8" class="md-textarea form-control" rows="4"></textarea>
-            <label data-error="wrong" data-success="right" for="form8">Açıklama</label>
-          </div>
+
+<div class="form-group">
+          <label for="recipient-name" class="col-form-label">Kaza Tarihi ve Saati</label>
+          <input id="datetimepicker" class="form-control" type="text" >
 
         </div>
+        <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Tahmini Yol Açılma Süresi</label>
+                  <input id="datetimepicker2" class="form-control" type="text" >
+
+                </div>
+        <div class="form-group">
+                  <label for="message-text" class="col-form-label">Açıklama:</label>
+                  <textarea type="text" id="form8" class="md-textarea form-control" rows="3"></textarea>
+                </div>
+
+        </div>
+
+
+
+
+
         <div class="modal-footer d-flex justify-content-center">
           <button class="btn btn-unique" id="bildir" onClick="bildirClick()">Bildir <i class="fas fa-paper-plane-o ml-1"></i></button>
         </div>
@@ -259,6 +275,7 @@
   </div>
 
   <script>
+
     var titleCrash = "Kaza Bilgisi<br/>";
     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var labelIndex = 0;
@@ -393,6 +410,10 @@
     };
 
     function initAutocomplete() {
+
+      $('#datetimepicker').datetimepicker();
+      $('#datetimepicker2').datetimepicker();
+
 
       map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -581,9 +602,6 @@
       } else {
         alert("Konumlar zaten haritada gösteriliyor..");
       }
-
-
-
     }
 
     var currLocation, currMap;
@@ -595,8 +613,12 @@
     }
 
     function bildirClick() {
+      var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
+      var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
-      var textAreaVal = titleCrash + $("#form8").val();
+      var textAreaVal = "<b>Açıklama</b></br>"+ titleCrash + $("#form8").val() +"</br>";
+
+      var total = textCrashDate+textExpectedTime+textAreaVal;
       $('#modalBildirForm').modal('hide');
 
       var currLabel = labels[labelIndex++ % labels.length];
@@ -608,7 +630,7 @@
 
 
       var infowindow = new google.maps.InfoWindow({
-        content: textAreaVal
+        content: total
       });
       marker.addListener('click', function() {
         infowindow.open(map, marker);
@@ -618,10 +640,12 @@
   </script>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete" async defer></script>
-  <script src="jquery/jquery-3.4.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script type="text/javascript" src="js/mainpage.js"></script>
+  <script src="build/jquery.datetimepicker.full.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+
 </body>
 
 </html>
