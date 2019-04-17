@@ -252,8 +252,8 @@
 
         </div>
         <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Tahmini Yol Açılma Süresi</label>
-                  <input id="datetimepicker2" class="form-control" type="text" >
+                  <label for="recipient-name" class="col-form-label">Tahmini Yol Açılma Süresi(Saat)</label>
+                  <input id="dateinput" class="form-control" type="number" >
 
                 </div>
         <div class="form-group">
@@ -412,8 +412,6 @@
     function initAutocomplete() {
 
       $('#datetimepicker').datetimepicker();
-      $('#datetimepicker2').datetimepicker();
-
 
       map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -613,18 +611,22 @@
 
     function bildirClick() {
 
-      if($("#datetimepicker").val().length==0 || $("#datetimepicker2").val().length==0 || $("#form8").val().length==0){
-          alert("Lütfen boş alanları doldurun");
+      if($("#datetimepicker").val().length==0 || $("#dateinput").val().length==0 || $("#form8").val().length==0){
+          alert("Lütfen boş alanları doldurunuz");
       } else {
 
         var lat = this.currLocation.lat();
         var lng =  this.currLocation.lng()
-        console.log(lng);
         var latLng = {lat: lat,lng: lng};
+        createMarkerWithGeocode(latLng);
+
+
+      }
+      function createMarkerWithGeocode(latLng){
         geocoder.geocode({'location': latLng}, function(results, status) {
         if (status === 'OK') {
           if (results[0]) {
-            map.setZoom(11);
+            var currLabel = labels[labelIndex++ % labels.length];
 
             var marker = new google.maps.Marker({
               position: this.currLocation,
@@ -633,14 +635,13 @@
             });
 
             var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
-            var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
+            var textExpectedTime = "<b>Tahmini Yol Açılma Süresi(Saat)</b></br>" +$("#dateinput").val() +"</br>";
 
             var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
             var address = "<b>Adres</b></br>"+results[0].formatted_address +"</br>";
             var total = titleCrash+ "</br>"+ address+textCrashDate+textExpectedTime+textAreaVal;
             $('#modalBildirForm').modal('hide');
 
-            var currLabel = labels[labelIndex++ % labels.length];
             var infowindow = new google.maps.InfoWindow({
               content: total
             });
@@ -649,16 +650,13 @@
             });
 
           } else {
-            window.alert('No results found');
+             alert('Sonuç bulunamadı');
           }
         } else {
-          window.alert('Geocoder failed due to: ' + status);
+             alert('Geocoder işlemi sırasında hata oluştu: ' + status);
         }
       });
-
-
       }
-
     }
   </script>
 
