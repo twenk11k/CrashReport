@@ -408,7 +408,7 @@
         }
       ]
     };
-
+    var geocoder;
     function initAutocomplete() {
 
       $('#datetimepicker').datetimepicker();
@@ -423,6 +423,7 @@
         zoom: 9.7,
         mapTypeId: 'roadmap',
       });
+     geocoder = new google.maps.Geocoder;
 
       var input = document.getElementById('pac_input');
       var searchBox = new google.maps.places.SearchBox(input);
@@ -615,28 +616,46 @@
       if($("#datetimepicker").val().length==0 || $("#datetimepicker2").val().length==0 || $("#form8").val().length==0){
           alert("Lütfen boş alanları doldurun");
       } else {
-        var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
-        var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
-        var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
+        var lat = this.currLocation.lat();
+        var lng =  this.currLocation.lng()
+        console.log(lng);
+        var latLng = {lat: lat,lng: lng};
+        geocoder.geocode({'location': latLng}, function(results, status) {
+        if (status === 'OK') {
+          if (results[0]) {
+            map.setZoom(11);
 
-        var total = titleCrash+ "</br>"+textCrashDate+textExpectedTime+textAreaVal;
-        $('#modalBildirForm').modal('hide');
+            var marker = new google.maps.Marker({
+              position: this.currLocation,
+              label: currLabel,
+              map: this.currMap
+            });
 
-        var currLabel = labels[labelIndex++ % labels.length];
-        var marker = new google.maps.Marker({
-          position: this.currLocation,
-          label: currLabel,
-          map: this.currMap
-        });
+            var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
+            var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
+            var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
+            var address = "<b>Adres</b></br>"+results[0].formatted_address +"</br>";
+            var total = titleCrash+ "</br>"+ address+textCrashDate+textExpectedTime+textAreaVal;
+            $('#modalBildirForm').modal('hide');
 
-        var infowindow = new google.maps.InfoWindow({
-          content: total
-        });
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
+            var currLabel = labels[labelIndex++ % labels.length];
+            var infowindow = new google.maps.InfoWindow({
+              content: total
+            });
+            marker.addListener('click', function() {
+              infowindow.open(map, marker);
+            });
+
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
+
 
       }
 
