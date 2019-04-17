@@ -95,13 +95,7 @@
       width: 345px;
     }
 
-    .onoffswitch {
-      position: relative;
-      width: 99px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-    }
+
 
     .onoffswitch {
       position: relative;
@@ -186,13 +180,21 @@
       font-size: 17px;
       margin-top: 5px;
     }
-
+    #traffic {
+      font-family: Roboto;
+      font-size: 17px;
+      margin-top: 5px;
+    }
     #onoffswitch2 {
       display: flex;
       font-weight: bold;
       margin-bottom: 20px;
     }
-
+    #onoffswitch3 {
+      display: flex;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
     #location {
 
       margin-bottom: 15px;
@@ -221,11 +223,21 @@
       <p id="display_locations">Konumları Göster</p>
       <img src="img/location_black_36.png" id="location_img" />
     </div>
+    <div id="onoffswitch3">
+      <p id="traffic">Trafik</p>
+      <div class="onoffswitch">
+        <input type="checkbox" name="onoffswitch" onchange='handleChange2(this);' class="onoffswitch-checkbox" id="onoffswitchtraffic">
+        <label class="onoffswitch-label" for="onoffswitchtraffic">
+          <span class="onoffswitch-inner"></span>
+          <span class="onoffswitch-switch"></span>
+        </label>
+      </div>
+    </div>
     <div id="onoffswitch2">
       <p id="night_mode">Gece Modu</p>
       <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="myonoffswitch">
-        <label class="onoffswitch-label" for="myonoffswitch">
+        <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="onoffswitchnight">
+        <label class="onoffswitch-label" for="onoffswitchnight">
           <span class="onoffswitch-inner"></span>
           <span class="onoffswitch-switch"></span>
         </label>
@@ -409,6 +421,7 @@
       ]
     };
     var geocoder;
+    var trafficLayer;
     function initAutocomplete() {
 
       $('#datetimepicker').datetimepicker();
@@ -425,7 +438,7 @@
 
       var input = document.getElementById('pac_input');
       var searchBox = new google.maps.places.SearchBox(input);
-      var trafficLayer = new google.maps.TrafficLayer();
+     trafficLayer = new google.maps.TrafficLayer();
 
       var homeControlDiv = document.getElementById('bottom_left');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -488,25 +501,33 @@
         });
         map.fitBounds(bounds);
         trafficLayer.setMap(map);
-        trafficLayer.fitBounds(bounds);
 
+        document.getElementById("onoffswitchtraffic").checked = true;
       });
 
     }
-
+    function handleChange2(checkbox) {
+      if (checkbox.checked == true) {
+        trafficLayer.setMap(map);
+      } else {
+        trafficLayer.setMap(null);
+      }
+    }
 
     function handleChange(checkbox) {
+
       var textNight = document.getElementById("night_mode");
       var textLocation = document.getElementById("display_locations");
-
+      var textTraffic = document.getElementById("traffic");
       var locationImg = document.getElementById("location_img");
+
       if (checkbox.checked == true) {
         -map.setOptions({
           styles: styles['night']
         });
         textNight.style.color = '#e5e5e5';
         textLocation.style.color = '#e5e5e5';
-
+        textTraffic.style.color = '#e5e5e5';
         locationImg.src = "img/location_white_36.png";
       } else {
         -map.setOptions({
@@ -514,10 +535,11 @@
         });
         textNight.style.color = 'black';
         textLocation.style.color = 'black';
-
+        textTraffic.style.color = 'black';
         locationImg.src = "img/location_black_36.png";
 
       }
+
     }
     var isAlreadyDone = false;
 
