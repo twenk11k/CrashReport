@@ -528,8 +528,6 @@
         $.getJSON('https://my-json-server.typicode.com/dijwarbozyel/locationdata/locations', function(data) {
 
           console.log(data);
-          var labelVal = "ABCD";
-          var labelValIndex = 0;
 
           for (var i = 0; i < data.length; i++) {
             var latVal = data[i].location[0];
@@ -538,7 +536,7 @@
               lat: latVal,
               lng: lngVal
             };
-            var currLabel = labelVal[labelValIndex++ % labelVal.length];
+            var currLabel = labels[labelIndex++ % labels.length];
 
             switch (i) {
               case 0:
