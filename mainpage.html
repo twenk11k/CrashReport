@@ -611,28 +611,34 @@
     }
 
     function bildirClick() {
-      var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
-      var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
-      var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
+      if($("#datetimepicker").val().length==0 || $("#datetimepicker2").val().length==0 || $("#form8").val().length==0){
+          alert("Lütfen boş alanları doldurun");
+      } else {
+        var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
+        var textExpectedTime = "<b>Tahmini Yol Açılma Süresi</b></br>" +$("#datetimepicker2").val() +"</br>";
 
-      var total = titleCrash+ "</br>"+textCrashDate+textExpectedTime+textAreaVal;
-      $('#modalBildirForm').modal('hide');
+        var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
 
-      var currLabel = labels[labelIndex++ % labels.length];
-      var marker = new google.maps.Marker({
-        position: this.currLocation,
-        label: currLabel,
-        map: this.currMap
-      });
+        var total = titleCrash+ "</br>"+textCrashDate+textExpectedTime+textAreaVal;
+        $('#modalBildirForm').modal('hide');
+
+        var currLabel = labels[labelIndex++ % labels.length];
+        var marker = new google.maps.Marker({
+          position: this.currLocation,
+          label: currLabel,
+          map: this.currMap
+        });
 
 
-      var infowindow = new google.maps.InfoWindow({
-        content: total
-      });
-      marker.addListener('click', function() {
-        infowindow.open(map, marker);
-      });
+        var infowindow = new google.maps.InfoWindow({
+          content: total
+        });
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+
+      }
 
     }
   </script>
