@@ -7,9 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <script src="jquery/jquery-3.4.0.min.js"></script>
-
-
   <title>Crash Report</title>
+
   <style>
     #map {
       height: 100%;
@@ -95,8 +94,6 @@
       width: 345px;
     }
 
-
-
     .onoffswitch {
       position: relative;
       width: 75px;
@@ -180,21 +177,25 @@
       font-size: 17px;
       margin-top: 5px;
     }
+
     #traffic {
       font-family: Roboto;
       font-size: 17px;
       margin-top: 5px;
     }
-    #onoffswitch2 {
+
+    #switch_nightmode {
       display: flex;
       font-weight: bold;
       margin-bottom: 20px;
     }
-    #onoffswitch3 {
+
+    #switch_traffic {
       display: flex;
       font-weight: bold;
       margin-bottom: 20px;
     }
+
     #location {
 
       margin-bottom: 15px;
@@ -217,26 +218,26 @@
 
 <body>
 
-  <input id="pac_input" class="searchaddress" type="text" placeholder="Adres Ara">
+  <input id="pac_input" class="search_address" type="text" placeholder="Adres Ara">
   <div id="bottom_left">
     <div id="location" onclick='locationClick();'>
       <p id="display_locations">Konumları Göster</p>
       <img src="img/location_black_36.png" id="location_img" />
     </div>
-    <div id="onoffswitch3">
+    <div id="switch_traffic">
       <p id="traffic">Trafik</p>
       <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" onchange='handleChange2(this);' class="onoffswitch-checkbox" id="onoffswitchtraffic">
+        <input type="checkbox" name="onoffswitch" onchange='handleChangeTraffic(this);' class="onoffswitch-checkbox" id="onoffswitchtraffic">
         <label class="onoffswitch-label" for="onoffswitchtraffic">
           <span class="onoffswitch-inner"></span>
           <span class="onoffswitch-switch"></span>
         </label>
       </div>
     </div>
-    <div id="onoffswitch2">
+    <div id="switch_nightmode">
       <p id="night_mode">Gece Modu</p>
       <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" onchange='handleChange(this);' class="onoffswitch-checkbox" id="onoffswitchnight">
+        <input type="checkbox" name="onoffswitch" onchange='handleChangeNightMode(this);' class="onoffswitch-checkbox" id="onoffswitchnight">
         <label class="onoffswitch-label" for="onoffswitchnight">
           <span class="onoffswitch-inner"></span>
           <span class="onoffswitch-switch"></span>
@@ -258,26 +259,22 @@
         <div class="modal-body mx-3">
 
 
-<div class="form-group">
-          <label for="recipient-name" class="col-form-label">Kaza Tarihi ve Saati</label>
-          <input id="datetimepicker" class="form-control" type="text" >
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Kaza Tarihi ve Saati</label>
+            <input id="datetimepicker" class="form-control" type="text">
+
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Tahmini Yol Açılma Süresi(Saat)</label>
+            <input id="dateinput" class="form-control" type="number">
+
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Açıklama:</label>
+            <textarea type="text" id="form8" class="md-textarea form-control" rows="3"></textarea>
+          </div>
 
         </div>
-        <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Tahmini Yol Açılma Süresi(Saat)</label>
-                  <input id="dateinput" class="form-control" type="number" >
-
-                </div>
-        <div class="form-group">
-                  <label for="message-text" class="col-form-label">Açıklama:</label>
-                  <textarea type="text" id="form8" class="md-textarea form-control" rows="3"></textarea>
-                </div>
-
-        </div>
-
-
-
-
 
         <div class="modal-footer d-flex justify-content-center">
           <button class="btn btn-unique" id="bildir" onClick="bildirClick()">Bildir <i class="fas fa-paper-plane-o ml-1"></i></button>
@@ -292,6 +289,8 @@
     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var labelIndex = 0;
     var map;
+    var geocoder;
+    var trafficLayer;
 
     var styles = {
       default: null,
@@ -420,8 +419,7 @@
         }
       ]
     };
-    var geocoder;
-    var trafficLayer;
+
     function initAutocomplete() {
 
       $('#datetimepicker').datetimepicker();
@@ -434,11 +432,12 @@
         zoom: 9.7,
         mapTypeId: 'roadmap',
       });
-     geocoder = new google.maps.Geocoder;
+
+      geocoder = new google.maps.Geocoder;
 
       var input = document.getElementById('pac_input');
       var searchBox = new google.maps.places.SearchBox(input);
-     trafficLayer = new google.maps.TrafficLayer();
+      trafficLayer = new google.maps.TrafficLayer();
 
       var homeControlDiv = document.getElementById('bottom_left');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -454,8 +453,6 @@
       map.addListener('click', function(event) {
         addMarker(event.latLng, map);
       });
-
-
 
       var markers = [];
 
@@ -506,7 +503,8 @@
       });
 
     }
-    function handleChange2(checkbox) {
+
+    function handleChangeTraffic(checkbox) {
       if (checkbox.checked == true) {
         trafficLayer.setMap(map);
       } else {
@@ -514,7 +512,7 @@
       }
     }
 
-    function handleChange(checkbox) {
+    function handleChangeNightMode(checkbox) {
 
       var textNight = document.getElementById("night_mode");
       var textLocation = document.getElementById("display_locations");
@@ -541,6 +539,7 @@
       }
 
     }
+
     var isAlreadyDone = false;
 
     function locationClick() {
@@ -633,19 +632,26 @@
 
     function bildirClick() {
 
-      if($("#datetimepicker").val().length==0 || $("#dateinput").val().length==0 || $("#form8").val().length==0){
-          alert("Lütfen boş alanları doldurunuz");
+      if ($("#datetimepicker").val().length == 0 || $("#dateinput").val().length == 0 || $("#form8").val().length == 0) {
+        alert("Lütfen boş alanları doldurunuz");
+      } else if(parseFloat($("#dateinput").val()) <= 0){
+        alert("Tahmini yol açma süresi 0 dan küçük ya da eşit olamaz.")
       } else {
 
         var lat = this.currLocation.lat();
-        var lng =  this.currLocation.lng()
-        var latLng = {lat: lat,lng: lng};
+        var lng = this.currLocation.lng()
+        var latLng = {
+          lat: lat,
+          lng: lng
+        };
         createMarkerWithGeocode(latLng);
 
-
-      }
-      function createMarkerWithGeocode(latLng){
-        geocoder.geocode({'location': latLng}, function(results, status) {
+    }
+    }
+    function createMarkerWithGeocode(latLng) {
+      geocoder.geocode({
+        'location': latLng
+      }, function(results, status) {
         if (status === 'OK') {
           if (results[0]) {
             var currLabel = labels[labelIndex++ % labels.length];
@@ -656,12 +662,12 @@
               map: this.currMap
             });
 
-            var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" +$("#datetimepicker").val() +"</br>";
-            var textExpectedTime = "<b>Tahmini Yol Açılma Süresi(Saat)</b></br>" +$("#dateinput").val() +"</br>";
+            var textCrashDate = "<b>Kaza Tarihi ve Saati</b></br>" + $("#datetimepicker").val() + "</br>";
+            var textExpectedTime = "<b>Tahmini Yol Açılma Süresi(Saat)</b></br>" + $("#dateinput").val() + "</br>";
 
-            var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() +"</br>";
-            var address = "<b>Adres</b></br>"+results[0].formatted_address +"</br>";
-            var total = titleCrash+ "</br>"+ address+textCrashDate+textExpectedTime+textAreaVal;
+            var textAreaVal = "<b>Açıklama</b></br>" + $("#form8").val() + "</br>";
+            var address = "<b>Adres</b></br>" + results[0].formatted_address + "</br>";
+            var total = titleCrash + "</br>" + address + textCrashDate + textExpectedTime + textAreaVal;
             $('#modalBildirForm').modal('hide');
 
             var infowindow = new google.maps.InfoWindow({
@@ -672,22 +678,22 @@
             });
 
           } else {
-             alert('Sonuç bulunamadı');
+            $('#modalBildirForm').modal('hide');
+            alert('Sonuç bulunamadı');
           }
         } else {
-             alert('Geocoder işlemi sırasında hata oluştu: ' + status);
+          $('#modalBildirForm').modal('hide');
+          alert('Bir hata oluştu: ' + status);
         }
       });
-      }
     }
   </script>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOtBCmTY6ZmvRSs6XSaJkbrGxuYVmKgps&libraries=places&callback=initAutocomplete" async defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="js/mainpage.js"></script>
   <script src="build/jquery.datetimepicker.full.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+  <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/>
 
 </body>
 
